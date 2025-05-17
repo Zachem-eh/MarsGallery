@@ -8,30 +8,33 @@
 </head>
 <body>
     <h1 class="text-center mb-4">Пейзажи марса</h1>
-    <div id="marsCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div id="marsCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#marsCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#marsCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#marsCarousel" data-bs-slide-to="2"></button>
+                {% for i in range(images|length) %}
+                    {% if loop.first %}
+                        <button type="button" data-bs-target="#marsCarousel" data-bs-slide-to="{{ i }}" class="active"></button>
+                    {% else %}
+                        <button type="button" data-bs-target="#marsCarousel" data-bs-slide-to="{{ i }}"></button>
+                    {% endif %}
+                {% endfor %}
             </div>
 
             <div class="carousel-inner">
-                <div class="carousel-item active text-center">
-                    <img src="{{ url_for('static', filename='images/mars1.jpg') }}" alt="пейзаж Марса" width="1000">
-                    <div class="carousel-caption">
-                    </div>
-                </div>
-
-                <div class="carousel-item text-center">
-                    <img src="{{ url_for('static', filename='images/mars2.jpg') }}" alt="Вид из космоса" width="1000">
-                    <div class="carousel-caption">
-                    </div>
-                </div>
-
-                <div class="carousel-item text-center">
-                    <img src="{{ url_for('static', filename='images/mars3.jpg') }}" alt="Планета" width="1000">
-                    <div class="carousel-caption">
-                </div>
+                {% for image in images %}
+                    {% if loop.first %}
+                        <div class="carousel-item active text-center">
+                            <img src="{{ image }}" alt="Пейзаж Марса" width="1000">
+                            <div class="carousel-caption">
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="carousel-item text-center">
+                            <img src="{{ image }}" alt="Пейзаж Марса" width="1000">
+                            <div class="carousel-caption">
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
 
             <button class="carousel-control-prev" type="button" data-bs-target="#marsCarousel" data-bs-slide="prev">
@@ -41,6 +44,17 @@
                 <span class="carousel-control-next-icon"></span>
             </button>
         </div>
+    <div class="container py-5 bg-light text-center">
+            <form method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.image.label.text }}
+                    {{ form.image(class="form-control") }}
+                </div>
+                <div class="mb-5">
+                <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+                </div>
+            </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
